@@ -1,8 +1,8 @@
 package com.bielestudios.smartfox.tacticsreborn;
 
 
-import com.bielestudios.smartfox.tacticsreborn.handlers.JoinGameLobbyHandler;
-import com.bielestudios.smartfox.tacticsreborn.handlers.UserDisconnectHandler;
+import com.bielestudios.smartfox.tacticsreborn.handlers.*;
+import com.bielestudios.smartfox.tacticsreborn.managers.GameManager;
 import com.bielestudios.smartfox.tacticsreborn.util.LoginHandler;
 import com.bielestudios.smartfox.tacticsreborn.util.RegistrationHandler;
 import com.smartfoxserver.v2.components.signup.SignUpAssistantComponent;
@@ -13,6 +13,8 @@ public class TacticsRebornExtension extends SFSExtension
 {
 	private RegistrationHandler ourRegistrationHandler;
 	private LoginHandler ourLoginHandler;
+	
+	private GameManager ourGameManager;
 	
 	@Override
 	public void init() 
@@ -28,7 +30,23 @@ public class TacticsRebornExtension extends SFSExtension
 		addEventHandler(SFSEventType.USER_DISCONNECT, UserDisconnectHandler.class);
 		
 		//Setup RequestHandlers
-		addRequestHandler("CharacterList", JoinGameLobbyHandler.class);
+		addRequestHandler("JoinGameLobby", JoinGameLobbyHandler.class);
+		addRequestHandler("FindMatch", FindMatchHandler.class);
+		addRequestHandler("OnlinePlayers", OnlinePlayersHandler.class);
+		addRequestHandler("EnterChat", EnterChatHandler.class);
+		
+		//Start Game Server
+		ourGameManager = new GameManager();
+	}
+
+	public GameManager getGameManager() 
+	{
+		return ourGameManager;
+	}
+
+	public void setGameManager(GameManager aGameManager) 
+	{
+		this.ourGameManager = aGameManager;
 	}
 
 }
